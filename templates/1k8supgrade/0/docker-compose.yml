@@ -1,19 +1,4 @@
 kubelet:
-    labels:
-        io.rancher.container.dns: "true"
-        io.rancher.container.create_agent: "true"
-        io.rancher.container.agent.role: environmentAdmin
-        io.rancher.scheduler.global: "true"
-    command:
-        - kubelet
-        - --kubeconfig=/etc/kubernetes/ssl/kubeconfig
-        - --api_servers=https://kubernetes:6443
-        - --allow-privileged=true
-        - --register-node=true
-        - --cloud-provider=rancher
-        - --healthz-bind-address=0.0.0.0
-        - --cluster-dns=169.254.169.250
-        - --cluster-domain=cluster.local
     image: rancher/k8s:v1.2.4-rancher6
     volumes:
         - /var/run/docker.sock:/var/run/docker.sock
