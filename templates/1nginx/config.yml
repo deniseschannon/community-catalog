@@ -1,4 +1,4 @@
-name: Elasticsearch
+name: 1Nginx
 description: |
   Elasticsearch, you know for search!
 version: 1.7.3-rancher1

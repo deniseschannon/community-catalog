@@ -1,6 +1,6 @@
 .catalog:
-  name: "Elasticsearch"
-  version: "1.7.3-rancher1"
+  name: “nginx”
+  version: “2”
   description: "Elasticsearch. You know, for search"
   questions:
     - variable: cluster_name
