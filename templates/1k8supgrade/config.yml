@@ -1,5 +1,5 @@
-name: 1Nginx
+name: 1k8supgrade
 description: |
-  Elasticsearch, you know for search!
-version: 1.7.3-rancher1
-category: ELK
+  k8supgrade
+version: 
+category: 
