@@ -6,4 +6,5 @@ nginx-master:
     - nginx-link
 nginx-sidekick:
   image: nginx
- 
+nginx-link:
+  image: nginx 
