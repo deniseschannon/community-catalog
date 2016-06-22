@@ -2,6 +2,8 @@ nginx-master:
   image: nginx
   labels:
     io.rancher.sidekicks: nginx-sidekick
+  links:
+    - nginx-link
 nginx-sidekick:
   image: nginx
  
