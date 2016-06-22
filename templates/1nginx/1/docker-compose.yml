@@ -1,0 +1,8 @@
+nginx-master:
+  image: nginx
+  labels:
+    io.rancher.sidekicks: nginx-sidekick
+    foo: bar
+nginx-sidekick:
+  image: nginx
+ 
