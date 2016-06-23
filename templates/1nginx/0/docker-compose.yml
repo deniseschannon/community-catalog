@@ -6,3 +6,4 @@ nginx-sidekick:
   image: nginx
 nginx-link:
   image: nginx 
+nginx-host:
