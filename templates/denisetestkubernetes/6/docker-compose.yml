@@ -1,0 +1,87 @@
+kubelet:
+    labels:
+        io.rancher.container.dns: "true"
+        io.rancher.container.create_agent: "true"
+        io.rancher.container.agent.role: environmentAdmin
+        io.rancher.scheduler.global: "true"
+    image: ghost
+    volumes:
+        - /var/run/docker.sock:/var/run/docker.sock
+        - /var/run:/host/var/run
+        - /var/lib/docker:/var/lib/docker
+        - /dev:/host/dev
+    net: host
+    pid: host
+    ipc: host
+    privileged: true
+    links:
+        - kubernetes:kubernetes
+
+etcd:
+  image: nginx
+  labels:
+    io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+    io.rancher.sidekicks: etcd-data
+    io.rancher.service.allocate.skip.serialize: 'true'
+    io.rancher.container.start_once: 'true'
+  environment:
+    ETCD_DATA_DIR: /data
+    ETCDCTL_ENDPOINT: http://etcd:2379
+  links:
+  - etcd-data
+  - discovery
+  volumes_from:
+  - etcd-data
+
+etcd-data:
+  image: busybox
+  command: /bin/true
+  net: none
+  volumes:
+  - /data
+  labels:
+    io.rancher.container.start_once: 'true'
+
+discovery:
+  image: nginx
+  labels:
+    io.rancher.container.start_once: 'true'
+    io.rancher.sidekicks: bootstrap
+
+bootstrap:
+  image: nginx
+  links:
+  - discovery
+  labels:
+    io.rancher.container.start_once: 'true'
+  environment:
+    ETCDCTL_ENDPOINT: http://etcd:2379
+
+kubernetes:
+    labels:
+        io.rancher.container.create_agent: "true"
+        io.rancher.container.agent.role: environmentAdmin
+    image: nginx
+    links:
+        - etcd
+
+controller-manager:
+    image: nginx
+    labels:
+        io.rancher.container.create_agent: "true"
+        io.rancher.container.agent.role: environmentAdmin
+    links:
+        - kubernetes
+
+rancher-kubernetes-agent:
+    labels:
+        io.rancher.container.create_agent: "true"
+        io.rancher.container.agent_service.labels_provider: "true"
+    environment:
+        KUBERNETES_URL: http://master
+    image: nginx
+    privileged: true
+    volumes:
+        - /var/run/docker.sock:/var/run/docker.sock
+    links:
+        - kubernetes:master
