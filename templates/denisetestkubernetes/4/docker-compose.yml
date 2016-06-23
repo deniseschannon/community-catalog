@@ -4,7 +4,7 @@ kubelet:
         io.rancher.container.create_agent: "true"
         io.rancher.container.agent.role: environmentAdmin
         io.rancher.scheduler.global: "true"
-    image: ubuntu:14.04.3
+    image: nginx
     volumes:
         - /var/run/docker.sock:/var/run/docker.sock
         - /var/run:/host/var/run
@@ -21,14 +21,14 @@ proxy:
     labels:
         io.rancher.container.dns: "true"
         io.rancher.scheduler.global: "true"
-    image: ubuntu:14.04.3
+    image: nginx
     privileged: true
     net: host
     links:
         - kubernetes:master
 
 etcd:
-  image: ubuntu:14.04.3
+  image: nginx
   labels:
     io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
     io.rancher.sidekicks: etcd-data
@@ -53,13 +53,13 @@ etcd-data:
     io.rancher.container.start_once: 'true'
 
 discovery:
-  image: ubuntu:14.04.3
+  image: nginx
   labels:
     io.rancher.container.start_once: 'true'
     io.rancher.sidekicks: bootstrap
 
 bootstrap:
-  image: ubuntu:14.04.3
+  image: nginx
   links:
   - discovery
   labels:
@@ -71,7 +71,7 @@ kubernetes:
     labels:
         io.rancher.container.create_agent: "true"
         io.rancher.container.agent.role: environmentAdmin
-    image: ubuntu:14.04.3
+    image: nginx
     links:
         - etcd
 
@@ -81,17 +81,17 @@ kubectld:
     environment:
         SERVER: http://master
         LISTEN: ":8091"
-    image: ubuntu:14.04.3
+    image: nginx
     links:
         - kubernetes:master
 
 scheduler:
-    image: ubuntu:14.04.3
+    image: nginx
     links:
         - kubernetes:master
 
 controller-manager:
-    image: ubuntu:14.04.3
+    image: nginx
     labels:
         io.rancher.container.create_agent: "true"
         io.rancher.container.agent.role: environmentAdmin
@@ -104,7 +104,7 @@ rancher-kubernetes-agent:
         io.rancher.container.agent_service.labels_provider: "true"
     environment:
         KUBERNETES_URL: http://master
-    image: ubuntu:14.04.3
+    image: nginx
     privileged: true
     volumes:
         - /var/run/docker.sock:/var/run/docker.sock
@@ -112,7 +112,7 @@ rancher-kubernetes-agent:
         - kubernetes:master
 
 rancher-ingress-controller:
-    image: ubuntu:14.04.3
+    image: nginx
     labels:
         io.rancher.container.create_agent: "true"
         io.rancher.container.agent.role: environment
