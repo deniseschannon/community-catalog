@@ -28,7 +28,7 @@ proxy:
         - kubernetes:master
 
 etcd:
-  image: rancher/etcd:v2.3.6
+  image: ubuntu:14.04.3
   labels:
     io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
     io.rancher.sidekicks: etcd-data
@@ -64,24 +64,14 @@ bootstrap:
   - discovery
   labels:
     io.rancher.container.start_once: 'true'
-  
+  environment:
+    ETCDCTL_ENDPOINT: http://etcd:2379
+
 kubernetes:
     labels:
         io.rancher.container.create_agent: "true"
         io.rancher.container.agent.role: environmentAdmin
-    command: 
-        - kube-apiserver
-        - --service-cluster-ip-range=10.43.0.0/16
-        - --etcd-servers=http://etcd:2379
-        - --insecure-bind-address=0.0.0.0
-        - --insecure-port=80
-        - --cloud-provider=rancher
-        - --allow_privileged=true
-        - --admission-control=NamespaceLifecycle,LimitRanger,SecurityContextDeny,ResourceQuota,ServiceAccount
-        - --client-ca-file=/etc/kubernetes/ssl/ca.pem
-        - --tls-cert-file=/etc/kubernetes/ssl/cert.pem
-        - --tls-private-key-file=/etc/kubernetes/ssl/key.pem
-    image: rancher/k8s:v1.2.4-rancher6
+    image: ubuntu:14.04.3
     links:
         - etcd
 
@@ -91,29 +81,17 @@ kubectld:
     environment:
         SERVER: http://master
         LISTEN: ":8091"
-    image: rancher/kubectld:v0.2.0
+    image: ubuntu:14.04.3
     links:
         - kubernetes:master
 
 scheduler:
-    command:
-        - kube-scheduler
-        - --master=http://master
-        - --address=0.0.0.0
-    image: rancher/k8s:v1.2.4-rancher6
+    image: ubuntu:14.04.3
     links:
         - kubernetes:master
 
 controller-manager:
-    command:
-        - kube-controller-manager
-        - --master=https://kubernetes:6443
-        - --cloud-provider=rancher
-        - --address=0.0.0.0
-        - --kubeconfig=/etc/kubernetes/ssl/kubeconfig
-        - --root-ca-file=/etc/kubernetes/ssl/ca.pem
-        - --service-account-private-key-file=/etc/kubernetes/ssl/key.pem
-    image: rancher/k8s:v1.2.4-rancher6
+    image: ubuntu:14.04.3
     labels:
         io.rancher.container.create_agent: "true"
         io.rancher.container.agent.role: environmentAdmin
@@ -126,7 +104,7 @@ rancher-kubernetes-agent:
         io.rancher.container.agent_service.labels_provider: "true"
     environment:
         KUBERNETES_URL: http://master
-    image: rancher/kubernetes-agent:v0.2.0
+    image: ubuntu:14.04.3
     privileged: true
     volumes:
         - /var/run/docker.sock:/var/run/docker.sock
@@ -134,15 +112,11 @@ rancher-kubernetes-agent:
         - kubernetes:master
 
 rancher-ingress-controller:
-    image: rancher/ingress-controller:v0.1.3
+    image: ubuntu:14.04.3
     labels:
         io.rancher.container.create_agent: "true"
         io.rancher.container.agent.role: environment
     environment:
         KUBERNETES_URL: http://master
-    command:
-        - ingress-controller
-        - --lb-controller=kubernetes
-        - --lb-provider=rancher
     links:
         - kubernetes:master
