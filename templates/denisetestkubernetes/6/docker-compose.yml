@@ -61,7 +61,5 @@ rancher-kubernetes-agent:
         KUBERNETES_URL: http://master
     image: nginx
     privileged: true
-    volumes:
-        - /var/run/docker.sock:/var/run/docker.sock
     links:
         - kubernetes:master
