@@ -4,7 +4,7 @@ kubelet:
         io.rancher.container.create_agent: "true"
         io.rancher.container.agent.role: environmentAdmin
         io.rancher.scheduler.global: "true"
-    image: nginx
+    image: ghost
     volumes:
         - /var/run/docker.sock:/var/run/docker.sock
         - /var/run:/host/var/run
