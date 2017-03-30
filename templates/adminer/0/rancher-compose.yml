@@ -11,7 +11,7 @@
     required: true
     default: 1194
     type: int
-  - variable: "ADMINPORT"
+  - variable: "use_admin_port"
     description: "If the admin port will be exposed on the host"
     label: "Expose Admin Port?"
     required: true
