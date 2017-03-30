@@ -17,11 +17,11 @@ services:
       io.rancher.sidekicks: data
     volumes_from:
       - data
-    {{ if eq .Values.use_admin_port "true" }}
+    {{- if eq .Values.ADMINPORT "true" }}
     ports:
       - ${vpn_port}:1194/udp
       - ${admin_port}:943/tcp
-    {{ else }}
+    {{- else }}
     ports:
       - ${vpn_port}:1194/udp
     {{ end }}
