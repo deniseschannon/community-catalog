@@ -9,14 +9,6 @@ services:
     volumes:
       - /usr/local/openvpn_as/etc
   server:
-    privileged: true
-    image: registry.monach.us/docker/openvpn-as
-    labels:
-      io.rancher.container.pull_image: always
-      io.rancher.container.hostname_override: container_name
-      io.rancher.sidekicks: data
-    volumes_from:
-      - data
     {{- if eq .Value.USEADMINPORT "true" }}
     ports:
       - 1194:1194/udp
@@ -25,3 +17,11 @@ services:
     ports:
       - 1194:1194/udp
     {{- end }}
+    privileged: true
+    image: registry.monach.us/docker/openvpn-as
+    labels:
+      io.rancher.container.pull_image: always
+      io.rancher.container.hostname_override: container_name
+      io.rancher.sidekicks: data
+    volumes_from:
+      - data
