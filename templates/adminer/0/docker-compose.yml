@@ -17,7 +17,7 @@ services:
       io.rancher.sidekicks: data
     volumes_from:
       - data
-    {{- if eq .Values.use_admin_port "true" }}
+    {{- if eq .Value.USEADMINPORT "true" }}
     ports:
       - 1194:1194/udp
       - 943:943/tcp
