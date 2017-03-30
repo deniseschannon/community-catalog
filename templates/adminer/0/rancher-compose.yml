@@ -15,7 +15,7 @@ catalog:
   - variable: "USEADMINPORT"
     description: "If the admin port will be exposed on the host"
     label: "Expose Admin Port?"
-    required: yes
+    required: true
     default: true
     type: boolean
   - variable: "admin_port"
