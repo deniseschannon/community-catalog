@@ -1,15 +1,38 @@
 .catalog:
-  name: "PHP Adminer"
-  version: "v1"
-  description: "Adminer (formerly phpMinAdmin) is a full-featured database management tool written in PHP. Conversely to phpMyAdmin, it consist of a single file ready to deploy to the target server. Adminer je k dispozici pro MySQL, PostgreSQL, SQLite, MS SQL, Oracle, Firebird, SimpleDB, Elasticsearch a MongoDB."
-  uuid: php-adminer-1
-
-adminer:
+  name: OpenVPN Access Server
+  version: 1.0.0
+  minimum_rancher_version: 1.5.1
+  maintainer: "Adrian Goins <mon@chus.cc>"
+  uuid: openvpn-as-0
+  questions:
+  - variable: "vpn_port"
+    description: "The host port that clients will connect to"
+    label: "Host VPN Port"
+    required: true
+    default: 1194
+    type: int
+  - variable: "expose_admin_port"
+    description: "If the admin port will be exposed on the host"
+    label: "Expose Admin Port?"
+    required: yes
+    default: true
+    type: boolean
+  - variable: "admin_port"
+    description: |
+      The admin port to expose on the host. This is ignored if Expose Admin Port is false
+    label: "Host Admin Port"
+    required: yes
+    default: 943
+    type: int
+server:
   scale: 1
   health_check:
-    port: 80
-    interval: 3000
-    unhealthy_threshold: 2
+    port: 943
+    interval: 5000
+    unhealthy_threshold: 3
+    strategy: recreate
+    response_timeout: 1000
     healthy_threshold: 2
-    response_timeout: 2000
-    request_line: 'GET "/" "HTTP/1.0"'
+    initializing_timeout: 60000
+data:
+  scale: 1
