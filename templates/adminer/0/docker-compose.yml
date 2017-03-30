@@ -13,7 +13,7 @@ services:
     image: registry.monach.us/docker/openvpn-as
     ports:
       - ${vpn_port}:1194/udp
-    {{- if eq .Values.use_admin_port "true" }}
+    {{- if eq .Values.expose_admin_port "true" }}
       - ${admin_port}:943/tcp
     {{- end }}
     labels:
