@@ -9,14 +9,6 @@ services:
     volumes:
       - /usr/local/openvpn_as/etc
   server:
-    {{- if eq .Values.USEADMINPORT "true" }}
-    ports:
-      - 1194:1194/udp
-      - 943:943/tcp
-    {{- else }}
-    ports:
-      - 1194:1194/udp
-    {{- end }}
     privileged: true
     image: registry.monach.us/docker/openvpn-as
     labels:
@@ -25,3 +17,11 @@ services:
       io.rancher.sidekicks: data
     volumes_from:
       - data
+    {{ if eq .Values.use_admin_port "true" }}
+    ports:
+      - ${vpn_port}:1194/udp
+      - ${admin_port}:943/tcp
+    {{ else }}
+    ports:
+      - ${vpn_port}:1194/udp
+    {{ end }}

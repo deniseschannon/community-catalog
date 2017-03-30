@@ -1,5 +1,4 @@
-version: '2'
-catalog:
+.catalog:
   name: OpenVPN Access Server
   version: 1.0.0
   minimum_rancher_version: 1.5.1
@@ -12,10 +11,10 @@ catalog:
     required: true
     default: 1194
     type: int
-  - variable: "USEADMINPORT"
+  - variable: "expose_admin_port"
     description: "If the admin port will be exposed on the host"
     label: "Expose Admin Port?"
-    required: true
+    required: yes
     default: true
     type: boolean
   - variable: "admin_port"
@@ -25,17 +24,15 @@ catalog:
     required: yes
     default: 943
     type: int
-
-services:
-  server:
-    scale: 1
-    health_check:
-      port: 943
-      interval: 5000
-      unhealthy_threshold: 3
-      strategy: recreate
-      response_timeout: 1000
-      healthy_threshold: 2
-      initializing_timeout: 60000
-  data:
-    scale: 1
+server:
+  scale: 1
+  health_check:
+    port: 943
+    interval: 5000
+    unhealthy_threshold: 3
+    strategy: recreate
+    response_timeout: 1000
+    healthy_threshold: 2
+    initializing_timeout: 60000
+data:
+  scale: 1
