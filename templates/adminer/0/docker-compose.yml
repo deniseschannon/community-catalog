@@ -19,9 +19,9 @@ services:
       - data
     {{- if eq .Values.use_admin_port "true" }}
     ports:
-      - ${vpn_port}:1194/udp
-      - ${admin_port}:943/tcp
+      - 1194:1194/udp
+      - 943:943/tcp
     {{- else }}
     ports:
-      - ${vpn_port}:1194/udp
+      - 1194:1194/udp
     {{- end }}
