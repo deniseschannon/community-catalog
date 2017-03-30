@@ -1,4 +1,5 @@
-.catalog:
+version: '2'
+catalog:
   name: OpenVPN Access Server
   version: 1.0.0
   minimum_rancher_version: 1.5.1
@@ -24,15 +25,17 @@
     required: yes
     default: 943
     type: int
-server:
-  scale: 1
-  health_check:
-    port: 943
-    interval: 5000
-    unhealthy_threshold: 3
-    strategy: recreate
-    response_timeout: 1000
-    healthy_threshold: 2
-    initializing_timeout: 60000
-data:
-  scale: 1
+
+services:
+  server:
+    scale: 1
+    health_check:
+      port: 943
+      interval: 5000
+      unhealthy_threshold: 3
+      strategy: recreate
+      response_timeout: 1000
+      healthy_threshold: 2
+      initializing_timeout: 60000
+  data:
+    scale: 1
