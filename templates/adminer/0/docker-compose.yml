@@ -11,17 +11,14 @@ services:
   server:
     privileged: true
     image: registry.monach.us/docker/openvpn-as
+    ports:
+      - ${vpn_port}:1194/udp
+    {{- if eq .Values.use_admin_port "true" }}
+      - ${admin_port}:943/tcp
+    {{- end }}
     labels:
       io.rancher.container.pull_image: always
       io.rancher.container.hostname_override: container_name
       io.rancher.sidekicks: data
     volumes_from:
       - data
-    {{- if eq .Values.use_admin_port "true" }}
-    ports:
-      - ${vpn_port}:1194/udp
-      - ${admin_port}:943/tcp
-    {{- else }}
-    ports:
-      - ${vpn_port}:1194/udp
-    {{ end }}
